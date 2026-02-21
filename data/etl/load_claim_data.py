@@ -7,7 +7,7 @@ spark = SparkSession.builder \
                     .getOrCreate()
 
 # configure variables
-BUCKET_NAME = "avd-bucket-10"
+BUCKET_NAME = "healthcare_b1"
 CLAIMS_BUCKET_PATH = f"gs://{BUCKET_NAME}/landing/claims/*.csv"
 BQ_TABLE = "evident-factor-479408-a9.bronze_dataset.claims"
 TEMP_GCS_BUCKET = f"{BUCKET_NAME}/temp/"
