@@ -8,10 +8,10 @@ from airflow.providers.google.cloud.operators.dataproc import (
     DataprocSubmitJobOperator,
 )
 
-PROJECT_ID = "feisty-flow-466306-f6"
+PROJECT_ID = "evident-factor-479408-a9"
 REGION = "us-east1"
 CLUSTER_NAME = "cluster-1"
-COMPOSER_BUCKET = "us-central1-avdhealthcare20-9fb9bfea-bucket"
+COMPOSER_BUCKET = "us-central1-airflow-1-5eedda16-bucket"
 
 GCS_JOB_FILE_1 = f"gs://{COMPOSER_BUCKET}/data/etl/load_data.py"
 PYSPARK_JOB_1 = {
