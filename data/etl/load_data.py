@@ -180,36 +180,23 @@ def extract_and_save_to_landing(table, load_type, watermark_col):
 
 
 # read config file
-# --- Yeh wala hissa load_data.py ke aakhir mein replace karein ---
-
-# config file read karein
+# --- Yeh loop replace karein ---
 config_df = read_config_file()
 
 for row in config_df.collect():
-    # CSV ke column names 'tablename' aur 'loadtype' hain (config.csv ke hisaab se)
-    table = row['tablename']
+    # Row se values nikaalne ka sabse safe tareeka
+    is_active = str(row["is_active"])
+    database = row["database"]
     
-    # .strip().lower() lagane se 'Full' aur 'full' dono sahi se kaam karenge
-    load_type = row['loadtype'].strip().lower()
-    
-    # Check karein ki table active hai ya nahi (optional but good practice)
-    is_active = str(row['is_active'])
-
-    if is_active == '1':
-        if load_type == 'full':
-            print(f"🚀 Starting Full Load for table: {table}")
-            extract_from_mysql(table, load_type)
+    if is_active == '1' and database == "hospital_db": 
+        table = row["tablename"]
+        load_type = row["load_type"]
+        watermark_col = row["watermark"] # CSV ke 'watermark' column se value
         
-        elif load_type == 'incremental':
-            print(f"📈 Starting Incremental Load for table: {table}")
-            # Abhi ke liye hum extract_from_mysql hi call kar rahe hain
-            # Kyunki aapke function mein incremental ka logic handle hona baki hai
-            extract_from_mysql(table, load_type)
+        print(f"🔄 Processing {table} | Mode: {load_type}")
         
-        else:
-            print(f"⚠️ Unknown load type '{load_type}' for table {table}")
-    else:
-        print(f"⏭️ Skipping {table} because it is inactive (is_active=0)")
+        # Sahi function call: 'extract_and_save_to_landing'
+        extract_and_save_to_landing(table, load_type, watermark_col)
 
 save_logs_to_gcs()
 save_logs_to_bigquery()
